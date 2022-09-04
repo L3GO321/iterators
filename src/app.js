@@ -3,31 +3,25 @@ class Team {
         this.characters = characters;
     }
 
-    it() {
-        this.characters[Symbol.iterator] = function () {
-            let current = -1;
-            let last = Object.keys(this).length - 1;
-            const chars = Object.values(this)
+    [Symbol.iterator] = function () {
+        let current = 0;
+        let last = Object.keys(this);
+        const chars = Object.values(this)
+        console.log(chars)
+        return {
+            next() {
+                if (current < last) {
+                    current++
 
-            return {
-                next() {
-                    if (current < last) {
-                        current++
-
-                        return {
-                            done: false,
-                            value: chars[current]
-                        }
-                    }
                     return {
-                        done: true
+                        done: false,
+                        value: chars[current]
                     }
                 }
+                return {
+                    done: true
+                }
             }
-        }
-
-        for (let num of this.characters) {
-            console.log(num)
         }
     }
 }
@@ -59,7 +53,7 @@ const characters = {
     }
 }
 
-const a = new Team(characters)
-
-a.it()
-
+const team = new Team(characters)
+for (let item of team) {
+    console.log(item)
+}
